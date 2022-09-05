@@ -1,0 +1,160 @@
+---
+title: "Analysis of Work Disabilitity Discrimination within Constitutions and Statutory Laws"
+author: "Parker Holt"
+output:
+  pdf_document: default
+  html_document: default
+date: "2022-08-04"
+---
+## Introduction
+The analysis aims to reveal any possible relationships between constitutional language and statutory language on work disability discrimination. The dataset is obtained from [World Policy Center](https://www.worldpolicycenter.org/maps-data/data-download/disability-data-download). The dataset was released in June 2019 during the 12th Conference of States Parties to the Convention on the Rights of Persons with Disabilities. Dataset is already sorted and cleaned for analysis. The analysis is on the basis of analyzing heatmap charts to see patterns and trends. The analysis shows there are relationships indicated through the charts. Results lead to a conclusion that lack of constitutional rights have relation to having no statutory laws or having statutory laws protecting work discrimination. Also, guaranteed constitutional rights have relationship to statutory laws protecting work discrimination. Inferences are that if a country has no constitutional right or guaranteed right will lead to no laws protections or law protections. Vague rights or protections have no or weak correlation.
+
+DISCLAIMER: This report is not meant for commercial purposes, but research purposes. The dataset does not appear in the report. The agreement is that the data is not to be distributed to any parties. Any party desiring to access the dataset to validate the analysis will need contact World Policy Center. Variables from the dataset are selected which is relevant to the analysis.
+
+```{r echo = FALSE, results= 'hide', message = FALSE}
+library(tidyverse)
+library(grid)
+library(pheatmap)
+library(dplyr)
+library(skimr)
+library(janitor)
+library(here)
+```
+
+```{r import data, echo = FALSE}
+disability <- read.csv("C:/Users/parke/OneDrive - Utah Valley University/Desktop/Work/Google Cert Study/Capstone Case Study/WORLD_Disability_Dataset_3.28.22 - Sheet1.csv")
+```
+
+## Charts comparing Constitutional Language on Work Discrimination and Statutory Language on Work Discrimination
+
+Heatmap charts are used to attempt to find relationships between constitutional language versus statutory language. It is not accurate to merge all statutory language variables into one chart, so a comparison of visualized charts will be accurate. Variables (constitutional work discrimination rights and all related work discrimination statutory variables) use discrete values which show the strength of language ranging from 1 to 5. If the value equals one, then the constitution or laws has no language giving rights or protections. If the value equals five, then language has guaranteed rights or protections.
+
+I found some interesting insights:
+
+* If constitutional language equals to 1, then there is relative strong correlation in all charts corresponding to having 1 or 5 in statutory language.
+
+* If constitutional language equals to 5, then there is significant correlation in all charts corresponding to 5 in statutory language. However, there are some instances where there is significant correlation to 1 in statutory language.
+
+```{r hiring discrimination}
+hiring <- table(disability$const_work_23, disability$hir_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(hiring, display_numbers = T, cluster_cols=FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Hiring Protections", y=1.05, gp=gpar(fontsize=12))
+
+
+```
+
+```{r promotions and demotions}
+promotions_demotions <- table(disability$const_work_23, disability$promdemo_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(promotions_demotions, display_numbers = T, cluster_cols=FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Promotions & Demotions Protections", y=1.05, gp=gpar(fontsize=10))
+```
+
+```{r training}
+training <- table(disability$const_work_23, disability$train_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(training, display_numbers = T, cluster_cols=FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Training Protections", y=1.05, gp=gpar(fontsize=12))
+```
+
+```{r pay basis}
+pay_basis <- table(disability$const_work_23, disability$pay_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(pay_basis, display_numbers = T, cluster_cols=FALSE, cluster_rows = FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Pay Basis Protections", y=1.05, gp=gpar(fontsize=12))
+```
+
+```{r harrassment}
+harrassment <- table(disability$const_work_23, disability$harass_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(harrassment, display_numbers = T, cluster_cols=FALSE, cluster_rows = FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Harrassment Protections", y=1.05, gp=gpar(fontsize=12))
+```
+
+```{r terimation}
+terimation <- table(disability$const_work_23, disability$term_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(harrassment, display_numbers = T, cluster_cols=FALSE, cluster_rows = FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Harrassment Protections", y=1.05, gp=gpar(fontsize=12))
+```
+
+```{r indirect discrimination}
+indirect_d <- table(disability$const_work_23, disability$indir_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(indirect_d, display_numbers = T, cluster_cols=FALSE, cluster_rows = FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Indirect Discrimination Protections", y=1.05, gp=gpar(fontsize=10))
+```
+
+```{r accommodations}
+accommodations <- table(disability$const_work_23, disability$accomm)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(accommodations, display_numbers = T, cluster_cols=FALSE, cluster_rows = FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Accommodations Protections", y=1.05, gp=gpar(fontsize=12))
+```
+
+```{r retaliation}
+retaliation <- table(disability$const_work_23, disability$ret_dis)
+
+cols <- colorRampPalette(c("white", "Dark Blue"))(30)
+
+setHook("grid.newpage", function() pushViewport(viewport(x=.9,y=.9,width=0.8, height=0.8, name="vp", just=c("right","top"))), action="prepend")
+pheatmap(retaliation, display_numbers = T, cluster_cols=FALSE, cluster_rows = FALSE, color = cols)
+setHook("grid.newpage", NULL, "replace")
+grid.text("Strength of Statutory Language", y=-0.05, gp=gpar(fontsize=12))
+grid.text("Strength of Constitutional Language", x=-0.05, rot=90, gp=gpar(fontsize=12))
+grid.text("Constitutional Disability Work Protections vs. Statutory Accommodations Protections", y=1.05, gp=gpar(fontsize=12))
+```
+
+## Conclusion
+The analysis shows there are strong relationships if the constitutional language does not guarantee rights which corresponds to having no statutory protections or statutory protections. Constitutional language guaranteeing rights have relationship with statutory protections. Charts do not show any significant correlation for vague language or aspire to implement constitutional rights or statutory protections for work disability discrimination. Therefore, if a country has no constitutional right or guaranteed right will lead to no laws protections or law protections. If the Convention on the Rights of Persons with Disabilities desires to maximize the rights of people with disabilities, then it would be best to ensure countries guarantee the right to work without discrimination explicitly stated in their constitutions.
+
+
